@@ -53,7 +53,7 @@ void loop() {
     //restart timing
     distanceMillis = millis();
     getDistance();
-//    getDistance2();
+    getDistance2();
   }
 
   if(distance <= 100 && Flag1 == false){
@@ -77,9 +77,9 @@ void loop() {
       Serial.println("Relay off");
       previousMillis = currentMillis;
       delay(3000);
-      state2 = digitalRead(echoPin2);
-      while(state2 == HIGH && Flag1 == false){
+      while(state2 == LOW && Flag1 == false){
         Serial.println("Error leave the tunnel");
+        state2 = digitalRead(distance2);
         delay(1000);
       }
     }
@@ -93,8 +93,8 @@ void getDistance(){
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
 
-  Serial.print("Distance: ");
-  Serial.println(distance);
+//  Serial.print("Distance: ");
+//  Serial.println(distance);
 
 }
 void getDistance2(){
@@ -106,7 +106,9 @@ void getDistance2(){
   // measure duration of pulse from ECHO pin
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
-  
-  Serial.print("Distance 2: ");
-  Serial.println(distance2);
+
+  state2 = digitalRead(distance2);
+  Serial.print(state2);
+//  Serial.print("Distance 2: ");
+//  Serial.println(distance2);
 }
