@@ -6,8 +6,8 @@ int distance;
 float duration;
 int state;
 //ultrasonic sensor two
-const int trigPin2 = 10;    // Trigger
-const int echoPin2 = 9;    // Echo
+const int trigPin2 = 9;    // Trigger
+const int echoPin2 = 8;    // Echo
 int distance2;
 float duration2;
 int state2;
@@ -50,7 +50,7 @@ void setup() {
 void loop() {
   if (millis() - distanceMillis > 500)
   {
-    //resart timing
+    //restart timing
     distanceMillis = millis();
     getDistance();
 //    getDistance2();
@@ -77,6 +77,11 @@ void loop() {
       Serial.println("Relay off");
       previousMillis = currentMillis;
       delay(3000);
+      state2 = digitalRead(echoPin2);
+      while(state2 == HIGH && Flag1 == false){
+        Serial.println("Error leave the tunnel");
+        delay(1000);
+      }
     }
   }
 }
