@@ -1,19 +1,18 @@
 //ultrasonic sensor one
-const int trigPin = 13;    // Trigger
-const int echoPin = 12;    // Echo
+const int trigPin = 9;    // Trigger
+const int echoPin = 8;    // Echo
 const int relay = 7;
 int distance;
 float duration;
 int state;
 //ultrasonic sensor two
-const int trigPin2 = 9;    // Trigger
-const int echoPin2 = 8;    // Echo
+const int trigPin2 = 13;    // Trigger
+const int echoPin2 = 12;    // Echo
 int distance2;
 float duration2;
 int state2;
 const unsigned long interval = 1000;           // interval at which to blink (milliseconds)
 unsigned long previousMillis;
-unsigned long previousMillis2;
 unsigned long distanceMillis;
 bool Flag1 = false;
 bool Flag2 = false;
@@ -77,10 +76,9 @@ void loop() {
       Serial.println("Relay off");
       previousMillis = currentMillis;
       delay(3000);
-      while(state2 == LOW && Flag1 == false){
+      while(distance2 > 0 && Flag1 == false){
         Serial.println("Error leave the tunnel");
-        state2 = digitalRead(distance2);
-        delay(1000);
+        delay(200);
       }
     }
   }
@@ -107,8 +105,6 @@ void getDistance2(){
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-  state2 = digitalRead(distance2);
-  Serial.print(state2);
 //  Serial.print("Distance 2: ");
 //  Serial.println(distance2);
 }
