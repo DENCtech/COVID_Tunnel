@@ -107,10 +107,13 @@ void loop() {
   }
   else{
     ssbuttonState = digitalRead(ssButton);
+    int val = digitalRead(var1);
+    int value = map(val,0,1023,5,30)
     if(ssbuttonState == LOW){
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       start();
+      delay(value);
       Serial.println("Relay on");
     }
     else{
