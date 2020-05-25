@@ -34,10 +34,8 @@ int ssbuttonState; // button state of the start and stp manual button
 
 
 // Lights
-int light = 4;
-int greenLight = 5;
-int redLight = 6;
-int buzzer = 7;
+int relay2 = 5;
+int buzzer = 6;
 
 //variable resistors
 int var1 = A0; // Manual time delay variable resistor
@@ -51,9 +49,6 @@ void setup() {
   pinMode(relay, OUTPUT);
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
-  pinMode(light, OUTPUT);
-  pinMode(greenLight, OUTPUT);
-  pinMode(redLight, OUTPUT);
   pinMode(buzzer, OUTPUT);
   pinMode(amButton, INPUT);
   pinMode(ssButton, INPUT);
@@ -80,9 +75,8 @@ void loop() {
     if(distance <= 350 && Flag1 == false){
       Flag1 = true;
       digitalWrite(buzzer, Flag1);
-      digitalWrite(greenLight, HIGH);
-      digitalWrite(redLight, LOW);
-      digitalWrite(light, HIGH);
+      digitalWrite(relay, HIGH);
+      digitalWrite(relay2, HIGH);
       Serial.println("Relay on");
       previousMillis = millis();
     }
@@ -96,12 +90,11 @@ void loop() {
       if (currentMillis - previousMillis >= 10000)
       {
         Flag1 = false;
-        digitalWrite(greenLight, LOW);
-        digitalWrite(light, LOW);
-        digitalWrite(redLight, HIGH);
+        digitalWrite(relay, LOW);
+        digitalWrite(relay2, LOW);
         Serial.println("Relay off");
         previousMillis = currentMillis;
-        delay(2000);
+        delay(3000);
         while(distance2 > 0 && distance2 < 170 && Flag1 == false){
           Serial.println(distance2);
           Serial.println("Error leave the tunnel");
@@ -115,17 +108,15 @@ void loop() {
   else{
     ssbuttonState = digitalRead(ssButton);
     if(ssbuttonState == LOW){
-      digitalWrite(greenLight, HIGH);
-      digitalWrite(redLight, LOW);
-      digitalWrite(light, HIGH);
+      digitalWrite(relay, HIGH);
+      digitalWrite(relay2, HIGH);
       start();
       Serial.println("Relay on");
     }
     else{
-       digitalWrite(greenLight, LOW);
-       digitalWrite(light, LOW);
-       digitalWrite(redLight, HIGH);
-       Serial.println("Relay off");
+      digitalWrite(relay, LOW);
+      digitalWrite(relay2, LOW);
+      Serial.println("Relay off");
     }
   }
 }
@@ -160,10 +151,8 @@ void getDistance2(){
 }
 void error(){
   digitalWrite(buzzer, HIGH);
-  digitalWrite(redLight, HIGH);
   delay(300);
   digitalWrite(buzzer, LOW);
-  digitalWrite(redLight, LOW);
   delay(300);  
 }
 void start(){
