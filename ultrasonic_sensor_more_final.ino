@@ -57,7 +57,7 @@ void loop() {
 
   if(distance <= 100 && Flag1 == false){
     Flag1 = true;
-    digitalWrite(buzzer, Flag1);
+//    digitalWrite(buzzer, Flag1);
     Serial.println("Relay on");
     previousMillis = millis();
   }
@@ -72,12 +72,13 @@ void loop() {
     if (currentMillis - previousMillis >= 5000)
     {
       Flag1 = false;
-      digitalWrite(buzzer, Flag1);
       Serial.println("Relay off");
       previousMillis = currentMillis;
-      delay(3000);
-      while(distance2 > 0 && Flag1 == false){
+      delay(1000);
+      while(distance2 > 0 && distance2 < 170 && Flag1 == false){
+        Serial.println(distance2);
         Serial.println("Error leave the tunnel");
+        getDistance2();
         delay(200);
       }
     }
@@ -106,5 +107,5 @@ void getDistance2(){
   distance2 = duration2 * 0.034 / 2;
 
 //  Serial.print("Distance 2: ");
-//  Serial.println(distance2);
+  Serial.println(distance2);
 }
