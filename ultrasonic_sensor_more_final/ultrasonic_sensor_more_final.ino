@@ -108,8 +108,8 @@ void loop() {
   else{
     ssbuttonState = digitalRead(ssButton);
     int val = digitalRead(var1);
-    int value = map(val,0,1023,5000,30000)
-    int value2 = map(value,5000,30000,5,30)
+    int value = map(val,0,1023,5000,30000);
+    int value2 = map(value,5000,30000,5,30);
     if(ssbuttonState == LOW){
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
