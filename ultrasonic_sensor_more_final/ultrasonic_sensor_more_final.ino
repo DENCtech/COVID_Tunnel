@@ -27,11 +27,11 @@ bool Flag1 = false;
 bool Flag2 = false;
 
 // Buttons and state
-#define amButton 11;
+int amButton = 11;
 bool autoMode = false;  // initialize programming mode to false
-#define ssButton 10;
-#define ambuttonState LOW;
-#define ssbuttonState LOW;
+int ssButton = 10;
+int ambuttonState;
+int ssbuttonState;
 
 // Lights
 int light = 4;
@@ -65,50 +65,48 @@ void setup() {
 }
 
 void loop() {
-  ambuttonState = digitalRead(amButton)
-  while(ambuttonStat == HIGH){
-    
-  }
-  
-  if (millis() - distanceMillis > 500)
-  {
-    //restart timing
-    distanceMillis = millis();
-    getDistance();
-    getDistance2();
-  }
-
-  if(distance <= 100 && Flag1 == false){
-    Flag1 = true;
-    digitalWrite(buzzer, Flag1);
-    digitalWrite(greenLight, HIGH);
-    digitalWrite(redLight, LOW);
-    digitalWrite(light, HIGH);
-    Serial.println("Relay on");
-    previousMillis = millis();
-  }
-  else if(distance > 100){
-    Flag1 = false;
-  }
-  if (distance <= 100)
-  {
-    unsigned long currentMillis = millis();
-
-    if (currentMillis - previousMillis >= 10000)
+  ambuttonState = digitalRead(amButton);
+  while(ambuttonState == HIGH){
+    if (millis() - distanceMillis > 500)
     {
+      //restart timing
+      distanceMillis = millis();
+      getDistance();
+      getDistance2();
+    }
+
+    if(distance <= 100 && Flag1 == false){
+      Flag1 = true;
+      digitalWrite(buzzer, Flag1);
+      digitalWrite(greenLight, HIGH);
+      digitalWrite(redLight, LOW);
+      digitalWrite(light, HIGH);
+      Serial.println("Relay on");
+      previousMillis = millis();
+    }
+    else if(distance > 100){
       Flag1 = false;
-      digitalWrite(greenLight, LOW);
-      digitalWrite(light, LOW);
-      digitalWrite(redLight, HIGH);
-      Serial.println("Relay off");
-      previousMillis = currentMillis;
-      delay(2000);
-      while(distance2 > 0 && distance2 < 170 && Flag1 == false){
-        Serial.println(distance2);
-        Serial.println("Error leave the tunnel");
-        error();
-        getDistance2();
-        delay(200);
+    }
+    if (distance <= 100)
+    {
+      unsigned long currentMillis = millis();
+  
+      if (currentMillis - previousMillis >= 10000)
+      {
+        Flag1 = false;
+        digitalWrite(greenLight, LOW);
+        digitalWrite(light, LOW);
+        digitalWrite(redLight, HIGH);
+        Serial.println("Relay off");
+        previousMillis = currentMillis;
+        delay(2000);
+        while(distance2 > 0 && distance2 < 170 && Flag1 == false){
+          Serial.println(distance2);
+          Serial.println("Error leave the tunnel");
+          error();
+          getDistance2();
+          delay(200);
+        }
       }
     }
   }
