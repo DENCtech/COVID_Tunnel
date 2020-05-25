@@ -29,7 +29,6 @@ bool Flag2 = false;
 // Buttons and state
 int amButton = 11;
 int ssButton = 10;
-bool autoMode = false;  // initialize programming mode to false
 int ambuttonState;
 int ssbuttonState; // button state of the start and stp manual button
 
@@ -69,7 +68,7 @@ void setup() {
 
 void loop() {
   ambuttonState = digitalRead(amButton);
-  if(ambuttonState == HIGH){
+  if(ambuttonState == LOW){
     if (millis() - distanceMillis > 500)
     {
       //restart timing
@@ -78,7 +77,7 @@ void loop() {
       getDistance2();
     }
 
-    if(distance <= 100 && Flag1 == false){
+    if(distance <= 350 && Flag1 == false){
       Flag1 = true;
       digitalWrite(buzzer, Flag1);
       digitalWrite(greenLight, HIGH);
@@ -87,10 +86,10 @@ void loop() {
       Serial.println("Relay on");
       previousMillis = millis();
     }
-    else if(distance > 100){
+    else if(distance > 350){
       Flag1 = false;
     }
-    if (distance <= 100)
+    if (distance <= 350)
     {
       unsigned long currentMillis = millis();
   
@@ -114,7 +113,8 @@ void loop() {
     }
   }
   else{
-    if(ssButton == HIGH){
+    ssbuttonState = digitalRead(ssButton);
+    if(ssbuttonState == HIGH){
       digitalWrite(greenLight, HIGH);
       digitalWrite(redLight, LOW);
       digitalWrite(light, HIGH);
@@ -151,7 +151,11 @@ void getDistance2(){
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-//  Serial.print("Distance 2: ");
+  Serial.println("AM Button State: ");
+  Serial.println(ambuttonState);
+  Serial.println("SS Button State: ");
+  Serial.println(ssbuttonState);
+  Serial.print("Distance 2: ");
   Serial.println(distance2);
 }
 void error(){
