@@ -28,8 +28,11 @@ bool Flag2 = false;
 
 // Buttons and state
 int amButton = 11;
+int ssButton = 10;
 bool autoMode = false;  // initialize programming mode to false
 int ambuttonState;
+int ssbuttonState; // button state of the start and stp manual button
+
 
 // Lights
 int light = 4;
@@ -53,6 +56,8 @@ void setup() {
   pinMode(greenLight, OUTPUT);
   pinMode(redLight, OUTPUT);
   pinMode(buzzer, OUTPUT);
+  pinMode(amButton, INPUT);
+  pinMode(ssButton, INPUT);
   //Protocol Configuration
   Serial.begin (9600);
   SPI.begin();           // MFRC522 Hardware uses SPI protocol
@@ -109,7 +114,19 @@ void loop() {
     }
   }
   else{
-    
+    if(ssButton == HIGH){
+      digitalWrite(greenLight, HIGH);
+      digitalWrite(redLight, LOW);
+      digitalWrite(light, HIGH);
+      start();
+      Serial.println("Relay on");
+    }
+    else{
+       digitalWrite(greenLight, LOW);
+       digitalWrite(light, LOW);
+       digitalWrite(redLight, HIGH);
+       Serial.println("Relay off");
+    }
   }
 }
 void getDistance(){
@@ -144,4 +161,9 @@ void error(){
   digitalWrite(buzzer, LOW);
   digitalWrite(redLight, LOW);
   delay(300);  
+}
+void start(){
+  digitalWrite(buzzer, HIGH);
+  delay(700);
+  digitalWrite(buzzer, LOW);
 }
