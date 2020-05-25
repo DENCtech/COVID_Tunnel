@@ -29,9 +29,7 @@ bool Flag2 = false;
 // Buttons and state
 int amButton = 11;
 bool autoMode = false;  // initialize programming mode to false
-int ssButton = 10;
 int ambuttonState;
-int ssbuttonState;
 
 // Lights
 int light = 4;
@@ -66,7 +64,7 @@ void setup() {
 
 void loop() {
   ambuttonState = digitalRead(amButton);
-  while(ambuttonState == HIGH){
+  if(ambuttonState == HIGH){
     if (millis() - distanceMillis > 500)
     {
       //restart timing
@@ -109,6 +107,9 @@ void loop() {
         }
       }
     }
+  }
+  else{
+    
   }
 }
 void getDistance(){
