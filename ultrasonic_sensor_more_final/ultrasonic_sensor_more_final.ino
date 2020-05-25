@@ -116,6 +116,7 @@ void loop() {
       start();
       delay(value);
       Serial.println("Relay on");
+      Serial.println(value);
     }
     else{
       digitalWrite(relay, LOW);
