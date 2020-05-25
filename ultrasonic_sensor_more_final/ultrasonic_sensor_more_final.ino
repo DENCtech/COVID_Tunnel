@@ -1,39 +1,50 @@
+#include <SPI.h>        // RC522 Module uses SPI protocol
+#include <MFRC522.h>  // Library for Mifare RC522 Devices
+#include <LiquidCrystal_I2C.h>
+// Create MFRC522 instance.
+#define SS_PIN 3
+#define RST_PIN 2
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 4);
 //ultrasonic sensor one
-const int trigPin = 9;    // Trigger
-const int echoPin = 8;    // Echo
+const int trigPin = 13;    // Trigger
+const int echoPin = 12;    // Echo
 const int relay = 7;
 int distance;
 float duration;
 int state;
+
 //ultrasonic sensor two
-const int trigPin2 = 13;    // Trigger
-const int echoPin2 = 12;    // Echo
+const int trigPin2 = 9;    // Trigger
+const int echoPin2 = 8;    // Echo
 int distance2;
 float duration2;
 int state2;
-const unsigned long interval = 1000;           // interval at which to blink (milliseconds)
 unsigned long previousMillis;
 unsigned long distanceMillis;
 bool Flag1 = false;
 bool Flag2 = false;
 
 // Buttons and state
-#define amButton 5;
-#define ssButton 4;
+#define amButton 11;
+bool autoMode = false;  // initialize programming mode to false
+#define ssButton 10;
 #define ambuttonState LOW;
 #define ssbuttonState LOW;
+
 // Lights
-int light = 3;
-int greenLight = 10;
-int redLight = 11;
-int buzzer = 6;
+int light = 4;
+int greenLight = 5;
+int redLight = 6;
+int buzzer = 7;
+
 //variable resistors
-int var1 = A0;
-int var2 = A1;
+int var1 = A0; // Manual time delay variable resistor
+int var2 = A1; // Level changer variable resistor
 
 
 void setup() {
-  Serial.begin (9600);
   //Define inputs and outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
@@ -44,9 +55,21 @@ void setup() {
   pinMode(greenLight, OUTPUT);
   pinMode(redLight, OUTPUT);
   pinMode(buzzer, OUTPUT);
+  //Protocol Configuration
+  Serial.begin (9600);
+  SPI.begin();           // MFRC522 Hardware uses SPI protocol
+  mfrc522.PCD_Init();    // Initialize MFRC522 Hardware
+  // LCD
+  lcd.init();
+  lcd.backlight();
 }
 
 void loop() {
+  ambuttonState = digitalRead(amButton)
+  while(ambuttonStat == HIGH){
+    
+  }
+  
   if (millis() - distanceMillis > 500)
   {
     //restart timing
@@ -57,13 +80,15 @@ void loop() {
 
   if(distance <= 100 && Flag1 == false){
     Flag1 = true;
-//    digitalWrite(buzzer, Flag1);
+    digitalWrite(buzzer, Flag1);
+    digitalWrite(greenLight, HIGH);
+    digitalWrite(redLight, LOW);
+    digitalWrite(light, HIGH);
     Serial.println("Relay on");
     previousMillis = millis();
   }
   else if(distance > 100){
     Flag1 = false;
-    digitalWrite(buzzer, Flag1);
   }
   if (distance <= 100)
   {
@@ -72,12 +97,16 @@ void loop() {
     if (currentMillis - previousMillis >= 10000)
     {
       Flag1 = false;
+      digitalWrite(greenLight, LOW);
+      digitalWrite(light, LOW);
+      digitalWrite(redLight, HIGH);
       Serial.println("Relay off");
       previousMillis = currentMillis;
-      delay(3000);
+      delay(2000);
       while(distance2 > 0 && distance2 < 170 && Flag1 == false){
         Serial.println(distance2);
         Serial.println("Error leave the tunnel");
+        error();
         getDistance2();
         delay(200);
       }
@@ -108,4 +137,12 @@ void getDistance2(){
 
 //  Serial.print("Distance 2: ");
   Serial.println(distance2);
+}
+void error(){
+  digitalWrite(buzzer, HIGH);
+  digitalWrite(redLight, HIGH);
+  delay(300);
+  digitalWrite(buzzer, LOW);
+  digitalWrite(redLight, LOW);
+  delay(300);  
 }
