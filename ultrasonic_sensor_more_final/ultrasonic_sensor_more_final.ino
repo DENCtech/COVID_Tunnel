@@ -68,7 +68,6 @@ void setup() {
 
 void loop() {
   ambuttonState = digitalRead(amButton);
-  while();
   if(ambuttonState == LOW){
     if (millis() - distanceMillis > 500)
     {
@@ -115,7 +114,7 @@ void loop() {
   }
   else{
     ssbuttonState = digitalRead(ssButton);
-    if(ssbuttonState == HIGH){
+    if(ssbuttonState == LOW){
       digitalWrite(greenLight, HIGH);
       digitalWrite(redLight, LOW);
       digitalWrite(light, HIGH);
