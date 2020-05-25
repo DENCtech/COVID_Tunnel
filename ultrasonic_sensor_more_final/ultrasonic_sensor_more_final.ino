@@ -68,6 +68,7 @@ void setup() {
 
 void loop() {
   ambuttonState = digitalRead(amButton);
+  while();
   if(ambuttonState == LOW){
     if (millis() - distanceMillis > 500)
     {
