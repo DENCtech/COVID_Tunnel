@@ -95,7 +95,7 @@ void loop() {
         Serial.println("Relay off");
         previousMillis = currentMillis;
         delay(3000);
-        while(distance2 > 0 && distance2 < 170 && Flag1 == false){
+        while(distance2 > 0 && distance2 < 350 && Flag1 == false){
           Serial.println(distance2);
           Serial.println("Error leave the tunnel");
           error();
@@ -142,12 +142,12 @@ void getDistance2(){
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-  Serial.println("AM Button State: ");
-  Serial.println(ambuttonState);
-  Serial.println("SS Button State: ");
-  Serial.println(ssbuttonState);
-  Serial.print("Distance 2: ");
-  Serial.println(distance2);
+//  Serial.println("AM Button State: ");
+//  Serial.println(ambuttonState);
+//  Serial.println("SS Button State: ");
+//  Serial.println(ssbuttonState);
+//  Serial.print("Distance 2: ");
+//  Serial.println(distance2);
 }
 void error(){
   digitalWrite(buzzer, HIGH);
