@@ -18,10 +18,10 @@ bool Flag1 = false;
 bool Flag2 = false;
 
 // Buttons and state
-#define amButton 5;
-#define ssButton 4;
-#define ambuttonState LOW;
-#define ssbuttonState LOW;
+int amButton = 11;
+int ssButton = 10;
+int ambuttonState = LOW;
+int ssbuttonState = LOW;
 // Lights
 int light = 3;
 int relay2 = 5;
@@ -50,6 +50,8 @@ void setup() {
 }
 
 void loop() {
+  int ssbuttonState = digitalRead(ssButton);
+  Serial.println(ssbuttonState);
   if (millis() - distanceMillis > 500)
   {
     //restart timing
@@ -61,14 +63,16 @@ void loop() {
   if(distance < 100 && Flag1 == false){
     Flag1 = true;
     digitalWrite(buzzer, Flag1);
-    digitalWrite(relay, HIGH);
-    digitalWrite(relay2, HIGH);
+    digitalWrite(relay, Flag1);
+    digitalWrite(relay2, Flag1);
     Serial.println("Relay on");
     previousMillis = millis();
   }
   else if(distance > 100){
     Flag1 = false;
     digitalWrite(buzzer, Flag1);
+    digitalWrite(relay, Flag1);
+    digitalWrite(relay2, Flag1);
   }
   if (distance < 100)
   {
@@ -79,8 +83,8 @@ void loop() {
       Flag1 = false;
       Serial.println("Relay off");
       digitalWrite(buzzer, Flag1);
-      digitalWrite(relay, LOW);
-      digitalWrite(relay2, LOW);
+      digitalWrite(relay, Flag1);
+      digitalWrite(relay2, Flag1);
       previousMillis = currentMillis;
       delay(3000);
       while(distance2 > 0 && distance2 < 100 && Flag1 == false){
@@ -100,8 +104,8 @@ void getDistance(){
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
 
-  Serial.print("Distance: ");
-  Serial.println(distance);
+//  Serial.print("Distance: ");
+//  Serial.println(distance);
 
 }
 void getDistance2(){
@@ -114,6 +118,6 @@ void getDistance2(){
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-  Serial.print("Distance 2: ");
-  Serial.println(distance2);
+//  Serial.print("Distance 2: ");
+//  Serial.println(distance2);
 }
