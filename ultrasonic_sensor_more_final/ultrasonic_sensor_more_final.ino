@@ -23,7 +23,6 @@ int ssButton = 10;
 int ambuttonState = LOW;
 int ssbuttonState = LOW;
 // Lights
-int light = 3;
 int relay2 = 5;
 int buzzer = 6;
 //variable resistors
@@ -39,62 +38,77 @@ void setup() {
   pinMode(relay, OUTPUT);
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
-  pinMode(light, OUTPUT);
   pinMode(relay2, OUTPUT);
   pinMode(buzzer, OUTPUT);
   digitalWrite(7, LOW);
   digitalWrite(5, LOW);
   digitalWrite(6, LOW);
   delay(1000);
-  
 }
 
 void loop() {
-  int ssbuttonState = digitalRead(ssButton);
-  Serial.println(ssbuttonState);
-  if (millis() - distanceMillis > 500)
-  {
-    //restart timing
-    distanceMillis = millis();
-    getDistance();
-    getDistance2();
-  }
-  
-  if(distance < 100 && Flag1 == false){
-    Flag1 = true;
-    digitalWrite(buzzer, Flag1);
-    digitalWrite(relay, Flag1);
-    digitalWrite(relay2, Flag1);
-    Serial.println("Relay on");
-    previousMillis = millis();
-  }
-  else if(distance > 100){
-    Flag1 = false;
-    digitalWrite(buzzer, Flag1);
-    digitalWrite(relay, Flag1);
-    digitalWrite(relay2, Flag1);
-  }
-  if (distance < 100)
-  {
-    unsigned long currentMillis = millis();
-
-    if (currentMillis - previousMillis >= 5000)
+  ambuttonState = digitalRead(amButton);
+  if(ambuttonState == HIGH){
+    if (millis() - distanceMillis > 500)
     {
-      Flag1 = false;
-      Serial.println("Relay off");
+      //restart timing
+      distanceMillis = millis();
+      getDistance();
+      getDistance2();
+    }
+    
+    if(distance < 100 && Flag1 == false){
+      Flag1 = true;
       digitalWrite(buzzer, Flag1);
       digitalWrite(relay, Flag1);
       digitalWrite(relay2, Flag1);
-      previousMillis = currentMillis;
-      delay(3000);
-      while(distance2 > 0 && distance2 < 100 && Flag1 == false){
-        Serial.println(distance2);
-        Serial.println("Error leave the tunnel");
-        getDistance2();
-        delay(200);
+      Serial.println("Relay on");
+      previousMillis = millis();
+    }
+    else if(distance > 100){
+      Flag1 = false;
+      digitalWrite(buzzer, Flag1);
+      digitalWrite(relay, Flag1);
+      digitalWrite(relay2, Flag1);
+    }
+    if (distance < 100)
+    {
+      unsigned long currentMillis = millis();
+  
+      if (currentMillis - previousMillis >= 5000)
+      {
+        Flag1 = false;
+        Serial.println("Relay off");
+        digitalWrite(buzzer, Flag1);
+        digitalWrite(relay, Flag1);
+        digitalWrite(relay2, Flag1);
+        previousMillis = currentMillis;
+        delay(3000);
+        while(distance2 > 0 && distance2 < 100 && Flag1 == false){
+          Serial.println(distance2);
+          Serial.println("Error leave the tunnel");
+          getDistance2();
+          delay(200);
+        }
       }
     }
+  }else{
+    ssbuttonState = digitalRead(ssButton);
+    if(ssbuttonState == HIGH){
+      digitalWrite(buzzer, HIGH);
+      digitalWrite(relay, HIGH);
+      digitalWrite(relay2, HIGH);
+      Serial.println("Relay on");
+      delay(1000);
+    }else{
+      Serial.println("Relay off");
+      digitalWrite(buzzer, LOW);
+      digitalWrite(relay, LOW);
+      digitalWrite(relay2, LOW);
+      delay(1000);
+    }
   }
+  
 }
 void getDistance(){
   digitalWrite(trigPin, HIGH);
