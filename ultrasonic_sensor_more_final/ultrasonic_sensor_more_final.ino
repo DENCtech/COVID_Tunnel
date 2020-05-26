@@ -8,16 +8,16 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 4);
 //ultrasonic sensor one
-const int trigPin = 13;    // Trigger
-const int echoPin = 12;    // Echo
+const int trigPin = 9;    // Trigger
+const int echoPin = 8;    // Echo
 const int relay = 7;
 int distance;
 float duration;
 int state;
 
 //ultrasonic sensor two
-const int trigPin2 = 9;    // Trigger
-const int echoPin2 = 8;    // Echo
+const int trigPin2 = 13;    // Trigger
+const int echoPin2 = 12;    // Echo
 int distance2;
 float duration2;
 int state2;
@@ -63,7 +63,7 @@ void setup() {
 
 void loop() {
   ambuttonState = digitalRead(amButton);
-  if(ambuttonState == LOW){
+  if(ambuttonState == HIGH){
     if (millis() - distanceMillis > 500)
     {
       //restart timing
@@ -107,14 +107,14 @@ void loop() {
   }
   else{
     ssbuttonState = digitalRead(ssButton);
-    int val = digitalRead(var1);
+    int val = analogRead(var1);
     int value = map(val,0,1023,5000,30000);
     int value2 = map(value,5000,30000,5,30);
-    if(ssbuttonState == LOW){
+    if(ssbuttonState == HIGH){
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       start();
-      delay(value);
+      delay(value2);
       Serial.println("Relay on");
       Serial.println(value);
     }
