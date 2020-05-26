@@ -62,8 +62,10 @@ void setup() {
 }
 
 void loop() {
-  ambuttonState = digitalRead(amButton);
-  if(ambuttonState == HIGH){
+//  ambuttonState = digitalRead(amButton);
+//  Serial.println("AM button state: ");
+//  Serial.println(ambuttonState);
+//  if(ambuttonState == HIGH){
     if (millis() - distanceMillis > 500)
     {
       //restart timing
@@ -72,7 +74,7 @@ void loop() {
       getDistance2();
     }
 
-    if(distance <= 350 && Flag1 == false){
+    if(distance <= 100 && Flag1 == false){
       Flag1 = true;
       digitalWrite(buzzer, Flag1);
       digitalWrite(relay, HIGH);
@@ -80,22 +82,23 @@ void loop() {
       Serial.println("Relay on");
       previousMillis = millis();
     }
-    else if(distance > 350){
+    else if(distance > 100){
       Flag1 = false;
     }
-    if (distance <= 350)
+    if (distance <= 100)
     {
       unsigned long currentMillis = millis();
   
-      if (currentMillis - previousMillis >= 10000)
+      if (currentMillis - previousMillis >= 5000)
       {
         Flag1 = false;
+        digitalWrite(buzzer, Flag1);
         digitalWrite(relay, LOW);
         digitalWrite(relay2, LOW);
         Serial.println("Relay off");
         previousMillis = currentMillis;
         delay(3000);
-        while(distance2 > 0 && distance2 < 350 && Flag1 == false){
+        while(distance2 > 0 && distance2 < 100 && Flag1 == false){
           Serial.println(distance2);
           Serial.println("Error leave the tunnel");
           error();
@@ -104,26 +107,27 @@ void loop() {
         }
       }
     }
-  }
-  else{
-    ssbuttonState = digitalRead(ssButton);
-    int val = analogRead(var1);
-    int value = map(val,0,1023,5000,30000);
-    int value2 = map(value,5000,30000,5,30);
-    if(ssbuttonState == HIGH){
-      digitalWrite(relay, HIGH);
-      digitalWrite(relay2, HIGH);
-      start();
-      delay(value2);
-      Serial.println("Relay on");
-      Serial.println(value);
-    }
-    else{
-      digitalWrite(relay, LOW);
-      digitalWrite(relay2, LOW);
-      Serial.println("Relay off");
-    }
-  }
+//  }
+//  else{
+//    ssbuttonState = digitalRead(ssButton);
+//    Serial.println(ssbuttonState);
+//    int val = analogRead(var1);
+//    int value = map(val,0,1023,5000,30000);
+//    int value2 = map(value,5000,30000,5,30);
+//    if(ssbuttonState == HIGH){
+//      digitalWrite(relay, HIGH);
+//      digitalWrite(relay2, HIGH);
+//      start();
+//      delay(value2);
+//      Serial.println("Relay on");
+//      Serial.println(value);
+//    }
+//    else{
+//      digitalWrite(relay, LOW);
+//      digitalWrite(relay2, LOW);
+//      Serial.println("Relay off");
+//    }
+//  }
 }
 void getDistance(){
   digitalWrite(trigPin, HIGH);
@@ -151,8 +155,8 @@ void getDistance2(){
 //  Serial.println(ambuttonState);
 //  Serial.println("SS Button State: ");
 //  Serial.println(ssbuttonState);
-//  Serial.print("Distance 2: ");
-//  Serial.println(distance2);
+  Serial.print("Distance : ");
+  Serial.println(distance);
 }
 void error(){
   digitalWrite(buzzer, HIGH);
