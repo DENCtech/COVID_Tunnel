@@ -18,7 +18,7 @@ void setup() {
 void loop() {
   getDistance3();
   int val1 = analogRead(var2);
-  int var = map(val1,0,1023,0,100);
+  int var3 = map(val1,0,1023,0,100);
   if(distance3 > 0 && distance3 < 20){
     state3 = HIGH;
     Serial.println("100%");
