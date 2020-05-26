@@ -42,6 +42,11 @@ void setup() {
   pinMode(light, OUTPUT);
   pinMode(relay2, OUTPUT);
   pinMode(buzzer, OUTPUT);
+  digitalWrite(7, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  delay(1000);
+  
 }
 
 void loop() {
@@ -52,10 +57,12 @@ void loop() {
     getDistance();
     getDistance2();
   }
-
-  if(distance <= 100 && Flag1 == false){
+  
+  if(distance < 100 && Flag1 == false){
     Flag1 = true;
     digitalWrite(buzzer, Flag1);
+    digitalWrite(relay, HIGH);
+    digitalWrite(relay2, HIGH);
     Serial.println("Relay on");
     previousMillis = millis();
   }
@@ -63,7 +70,7 @@ void loop() {
     Flag1 = false;
     digitalWrite(buzzer, Flag1);
   }
-  if (distance <= 100)
+  if (distance < 100)
   {
     unsigned long currentMillis = millis();
 
@@ -72,6 +79,8 @@ void loop() {
       Flag1 = false;
       Serial.println("Relay off");
       digitalWrite(buzzer, Flag1);
+      digitalWrite(relay, LOW);
+      digitalWrite(relay2, LOW);
       previousMillis = currentMillis;
       delay(3000);
       while(distance2 > 0 && distance2 < 100 && Flag1 == false){
@@ -91,8 +100,8 @@ void getDistance(){
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
 
-//  Serial.print("Distance: ");
-//  Serial.println(distance);
+  Serial.print("Distance: ");
+  Serial.println(distance);
 
 }
 void getDistance2(){
@@ -105,6 +114,6 @@ void getDistance2(){
   duration2 = pulseIn(echoPin2, HIGH);
   distance2 = duration2 * 0.034 / 2;
 
-//  Serial.print("Distance 2: ");
+  Serial.print("Distance 2: ");
   Serial.println(distance2);
 }
