@@ -11,6 +11,14 @@ const int echoPin2 = 12;    // Echo
 int distance2;
 float duration2;
 int state2;
+//ultrasonic sensor one
+const int trigPin3 = 13;    // Trigger
+const int echoPin3 = 12;    // Echo
+//const int relay = 7;
+int distance3;
+float duration3;
+int state3;
+
 const unsigned long interval = 1000;           // interval at which to blink (milliseconds)
 unsigned long previousMillis;
 unsigned long distanceMillis;
@@ -39,6 +47,8 @@ void setup() {
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
   pinMode(relay2, OUTPUT);
+  pinMode(trigPin3, OUTPUT);
+  pinMode(echoPin3, INPUT);
   pinMode(buzzer, OUTPUT);
   digitalWrite(7, LOW);
   digitalWrite(5, LOW);
@@ -47,6 +57,7 @@ void setup() {
 }
 
 void loop() {
+  chemLevel();
   ambuttonState = digitalRead(amButton);
   if(ambuttonState == HIGH){
     if (millis() - distanceMillis > 500)
@@ -136,9 +147,45 @@ void getDistance2(){
 //  Serial.print("Distance 2: ");
 //  Serial.println(distance2);
 }
+void getDistance3(){
+  digitalWrite(trigPin3, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin3, LOW);
+
+  duration3 = pulseIn(echoPin3, HIGH);
+  distance3 = duration3 * 0.034 / 2;
+
+//  Serial.print("Distance3: ");
+//  Serial.println(distance3);
+}
 void error(){
   digitalWrite(buzzer, HIGH);
   delay(500);
   digitalWrite(buzzer, LOW);
   delay(500);
+}
+void chemLevel(){
+  getDistance3();
+  int val1 = analogRead(var2);
+  int var3 = map(val1,0,1023,0,100);
+  if(distance3 > 0 && distance3 < 20){
+    state3 = HIGH;
+    Serial.println("100%");
+  }
+  if(distance3 > 19 && distance3 < 40){
+    state3 = HIGH;
+    Serial.println("100%");
+  }
+  if(distance3 > 39 && distance3 < 60){
+    state3 = HIGH;
+    Serial.println("60%");
+  }
+  if(distance3 > 59 && distance3 < 80){
+    state3 = HIGH;
+    Serial.println("20%");
+  }
+  if(distance3 > 79 && distance3 < 100){
+    state3 = LOW;
+    Serial.println("0%");
+  }
 }
