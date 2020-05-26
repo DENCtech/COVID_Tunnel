@@ -87,6 +87,7 @@ void loop() {
         while(distance2 > 0 && distance2 < 100 && Flag1 == false){
           Serial.println(distance2);
           Serial.println("Error leave the tunnel");
+          error();
           getDistance2();
           delay(200);
         }
@@ -134,4 +135,10 @@ void getDistance2(){
 
 //  Serial.print("Distance 2: ");
 //  Serial.println(distance2);
+}
+void error(){
+  digitalWrite(buzzer, HIGH);
+  delay(500);
+  digitalWrite(buzzer, LOW);
+  delay(500);
 }
