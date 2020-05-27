@@ -1,3 +1,5 @@
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 4);
 //ultrasonic sensor one
 const int trigPin = 9;    // Trigger
 const int echoPin = 8;    // Echo
@@ -53,13 +55,26 @@ void setup() {
   digitalWrite(7, LOW);
   digitalWrite(5, LOW);
   digitalWrite(6, LOW);
+  // LCD
+  lcd.init();
+  lcd.backlight();
   delay(1000);
 }
 
 void loop() {
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("ROBOTICS--CENTER");
+  lcd.setCursor(0, 1);
+  lcd.print("MODE:");
   chemLevel();
   ambuttonState = digitalRead(amButton);
-  if(ambuttonState == HIGH){
+  int autoM = HIGH;
+  if(ambuttonState == autoM){
+    lcd.setCursor(7, 1);
+    lcd.print(autoM);
+//    lcd.print("MODE:");
     if (millis() - distanceMillis > 500)
     {
       //restart timing
@@ -107,6 +122,8 @@ void loop() {
   }else{
     ssbuttonState = digitalRead(ssButton);
     if(ssbuttonState == HIGH){
+      lcd.setCursor(7, 0);
+      lcd.print(manual);
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
