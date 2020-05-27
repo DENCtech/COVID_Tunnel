@@ -85,9 +85,9 @@ void loop() {
     
     if(distance < 100 && Flag1 == false){
       Flag1 = true;
-      digitalWrite(buzzer, Flag1);
-      digitalWrite(relay, Flag1);
-      digitalWrite(relay2, Flag1);
+      digitalWrite(buzzer, HIGH);
+      digitalWrite(relay, HIGH);
+      digitalWrite(relay2, HIGH);
       Serial.println("Relay on");
       previousMillis = millis();
     }
@@ -105,9 +105,9 @@ void loop() {
       {
         Flag1 = false;
         Serial.println("Relay off");
-        digitalWrite(buzzer, Flag1);
-        digitalWrite(relay, Flag1);
-        digitalWrite(relay2, Flag1);
+        digitalWrite(buzzer, LOW);
+        digitalWrite(relay, LOW);
+        digitalWrite(relay2, LOW);
         previousMillis = currentMillis;
         delay(3000);
         while(distance2 > 0 && distance2 < 100 && Flag1 == false){
@@ -122,8 +122,6 @@ void loop() {
   }else{
     ssbuttonState = digitalRead(ssButton);
     if(ssbuttonState == HIGH){
-      lcd.setCursor(7, 0);
-      lcd.print(manual);
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
