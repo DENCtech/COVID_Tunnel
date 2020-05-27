@@ -65,6 +65,7 @@ void loop() {
   lcd.print("ChemLevel: ");
   lcd.setCursor(0, 3);
   lcd.print("Duration: ");
+  chemLevel();
   ambuttonState = digitalRead(amButton);
   if(ambuttonState == HIGH){
     getDistance();
@@ -135,17 +136,17 @@ void getDistance3(){
   duration3 = pulseIn(echoPin3, HIGH);
   distance3 = duration3 * 0.034 / 2;
 
-  Serial.print("Distance3: ");
-  Serial.println(distance3);
+//  Serial.print("Distance3: ");
+//  Serial.println(distance3);
 }
 void chemLevel(){
   getDistance3();
-  state3 = distance3;
+  state3 = digitalRead(echoPin3);
   Serial.println(state3);
   int val1 = analogRead(var2);
-  int var3 = map(val1,0,1023,0,100);
+  int val2 = map(val1,0,1023,0,100);
   int depth = map(state3,0,45,0,100);
-  if(distance3 >= val1){
+  if(distance3 >= val2){
     Serial.println("0%");
     digitalWrite(buzzer, LOW);
     digitalWrite(relay, LOW);
