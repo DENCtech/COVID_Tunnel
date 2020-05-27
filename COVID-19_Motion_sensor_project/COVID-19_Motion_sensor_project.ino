@@ -3,7 +3,7 @@ LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 4);
 
 int relayPin = 7;                // choose the pin for the Relay Pin
 
-int inputPin = 13;               // choose the input pin (for PIR sensor)
+int inputPin = 11;               // choose the input pin (for PIR sensor)
 int inputPin2 = 9;               // choose the input pin (for PIR sensor 02)
 const int relay = 7;
 int pirState = LOW;             // we start, assuming no motion detected
@@ -51,44 +51,49 @@ void loop() {
   lcd.setCursor(0, 3);
   lcd.print("Duration: ");
   ambuttonState = digitalRead(amButton);
-  if(ambuttonState == HIGH){
+//  if(ambuttonState == HIGH){
     val = digitalRead(inputPin);  // read input value
     val2 = digitalRead(inputPin2);  // read input value
-    if (val == HIGH && pirState == LOW) {
+    Serial.println(val);
+    Serial.println(val2);
+    if (val == HIGH && val2 == LOW) {
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       Serial.println("Motion detected!");
-      pirState = HIGH;
-      delay(1000);
+      delay(5000);
+//      digitalWrite(buzzer, LOW);
+//      digitalWrite(relay, LOW);
+//      digitalWrite(relay2, LOW);
+//      Serial.println("Motion ended!");
+//      delay(100);
     }
     else{
-      if(val2 == HIGH && pirState == HIGH){
+      if(val2 == HIGH && val == LOW){
         digitalWrite(buzzer, LOW);
         digitalWrite(relay, LOW);
         digitalWrite(relay2, LOW);
         Serial.println("Motion ended!");
-        pirState = LOW;
         delay(100);
       }
     }
-  }
-  else{
-    ssbuttonState = digitalRead(ssButton);
-    if(ssbuttonState == HIGH){
-      digitalWrite(buzzer, HIGH);
-      digitalWrite(relay, HIGH);
-      digitalWrite(relay2, HIGH);
-      Serial.println("Relay on");
-      delay(interval);
-    }
-    else{
-      Serial.println("Relay off");
-      digitalWrite(buzzer, LOW);
-      digitalWrite(relay, LOW);
-      digitalWrite(relay2, LOW);
-      delay(500);
-    }
-  }
+//  }
+//  else{
+//    ssbuttonState = digitalRead(ssButton);
+//    if(ssbuttonState == HIGH){
+//      digitalWrite(buzzer, HIGH);
+//      digitalWrite(relay, HIGH);
+//      digitalWrite(relay2, HIGH);
+//      Serial.println("Relay on");
+//      delay(interval);
+//    }
+//    else{
+//      Serial.println("Relay off");
+//      digitalWrite(buzzer, LOW);
+//      digitalWrite(relay, LOW);
+//      digitalWrite(relay2, LOW);
+//      delay(500);
+//    }
+//  }
   
 }
