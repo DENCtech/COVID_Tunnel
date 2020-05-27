@@ -141,17 +141,20 @@ void getDistance3(){
 }
 void chemLevel(){
   getDistance3();
-  state3 = digitalRead(echoPin3);
+  state3 = analogRead(distance3);
   Serial.println(state3);
   int val1 = analogRead(var2);
   int val2 = map(val1,0,1023,0,100);
-  int depth = map(state3,0,45,0,100);
-  if(distance3 >= val2){
+  int depth = map(val2,0,state3,0,100);
+  if(state3 >= depth){
     Serial.println("0%");
     digitalWrite(buzzer, LOW);
     digitalWrite(relay, LOW);
     digitalWrite(relay2, LOW);
     delay(500);
+  }  
+  else{
+    Serial.println(depth);
+    Serial.println(" %");
   }
-  
 }
