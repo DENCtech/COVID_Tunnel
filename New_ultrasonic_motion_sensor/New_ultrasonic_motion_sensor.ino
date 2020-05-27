@@ -1,3 +1,5 @@
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 4);
 //ultrasonic sensor one
 const int trigPin = 9;    // Trigger
 const int echoPin = 8;    // Echo
@@ -45,9 +47,12 @@ void setup() {
   pinMode(trigPin3, OUTPUT);
   pinMode(echoPin3, INPUT);
   pinMode(buzzer, OUTPUT);
-  digitalWrite(7, LOW);
-  digitalWrite(5, LOW);
-  digitalWrite(6, LOW);
+  digitalWrite(relay, LOW);
+  digitalWrite(relay2, LOW);
+  digitalWrite(buzzer, LOW);
+  // LCD
+  lcd.init();
+  lcd.backlight();
 }
 
 void loop() {
@@ -124,28 +129,28 @@ void getDistance3(){
   Serial.print("Distance3: ");
   Serial.println(distance3);
 }
-//void chemLevel(){
-//  getDistance3();
-//  int val1 = analogRead(var2);
-//  int var3 = map(val1,0,1023,0,100);
-//  if(distance3 > 0 && distance3 < 20){
-//    state3 = HIGH;
-//    Serial.println("100%");
-//  }
-//  if(distance3 > 19 && distance3 < 40){
-//    state3 = HIGH;
-//    Serial.println("100%");
-//  }
-//  if(distance3 > 39 && distance3 < 60){
-//    state3 = HIGH;
-//    Serial.println("60%");
-//  }
-//  if(distance3 > 59 && distance3 < 80){
-//    state3 = HIGH;
-//    Serial.println("20%");
-//  }
-//  if(distance3 > 79 && distance3 < 100){
-//    state3 = LOW;
-//    Serial.println("0%");
-//  }
-//}
+void chemLevel(){
+  getDistance3();
+  int val1 = analogRead(var2);
+  int var3 = map(val1,0,1023,0,100);
+  if(distance3 > 0 && distance3 < 20){
+    state3 = HIGH;
+    Serial.println("100%");
+  }
+  if(distance3 > 19 && distance3 < 40){
+    state3 = HIGH;
+    Serial.println("100%");
+  }
+  if(distance3 > 39 && distance3 < 60){
+    state3 = HIGH;
+    Serial.println("60%");
+  }
+  if(distance3 > 59 && distance3 < 80){
+    state3 = HIGH;
+    Serial.println("20%");
+  }
+  if(distance3 > 79 && distance3 < 100){
+    state3 = LOW;
+    Serial.println("0%");
+  }
+}
