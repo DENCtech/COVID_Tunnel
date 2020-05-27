@@ -60,7 +60,7 @@ void loop() {
       digitalWrite(relay2, HIGH);
       Serial.println("Motion detected!");
       pirState = HIGH;
-      delay(5000);
+      delay(1000);
     }
     else{
       if(val2 == HIGH && pirState == HIGH){
