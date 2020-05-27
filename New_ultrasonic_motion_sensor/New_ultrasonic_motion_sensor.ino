@@ -13,14 +13,14 @@ const int echoPin2 = 12;    // Echo
 int distance2;
 float duration2;
 int state2;
-ultrasonic sensor one
+//ultrasonic sensor three
 const int trigPin3 = 4;    // Trigger
 const int echoPin3 = 3;    // Echo
 int distance3;
 float duration3;
 int state3;
 
-const unsigned long interval = 1000;           // interval at which to blink (milliseconds)
+const unsigned long interval = 7000;           // interval at which to blink (milliseconds)
 unsigned long previousMillis;
 unsigned long distanceMillis;
 // Buttons and state
@@ -56,6 +56,15 @@ void setup() {
 }
 
 void loop() {
+  lcd.init();
+  lcd.setCursor(0, 0);
+  lcd.print("ROBOTICS--CENTER");
+  lcd.setCursor(0, 1);
+  lcd.print("Mode: ");
+  lcd.setCursor(0, 2);
+  lcd.print("ChemLevel: ");
+  lcd.setCursor(0, 3);
+  lcd.print("Duration: ");
   ambuttonState = digitalRead(amButton);
   if(ambuttonState == HIGH){
     getDistance();
@@ -65,7 +74,7 @@ void loop() {
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       Serial.println("Relay on");
-      delay(7000);
+      delay(interval);
     }
     else{
       Serial.println("Relay off");
@@ -82,7 +91,7 @@ void loop() {
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       Serial.println("Relay on");
-      delay(2000);
+      delay(interval);
     }
     else{
       Serial.println("Relay off");
@@ -131,26 +140,17 @@ void getDistance3(){
 }
 void chemLevel(){
   getDistance3();
+  state3 = distance3;
+  Serial.println(state3);
   int val1 = analogRead(var2);
   int var3 = map(val1,0,1023,0,100);
-  if(distance3 > 0 && distance3 < 20){
-    state3 = HIGH;
-    Serial.println("100%");
-  }
-  if(distance3 > 19 && distance3 < 40){
-    state3 = HIGH;
-    Serial.println("100%");
-  }
-  if(distance3 > 39 && distance3 < 60){
-    state3 = HIGH;
-    Serial.println("60%");
-  }
-  if(distance3 > 59 && distance3 < 80){
-    state3 = HIGH;
-    Serial.println("20%");
-  }
-  if(distance3 > 79 && distance3 < 100){
-    state3 = LOW;
+  int depth = map(state3,0,45,0,100);
+  if(distance3 >= val1){
     Serial.println("0%");
+    digitalWrite(buzzer, LOW);
+    digitalWrite(relay, LOW);
+    digitalWrite(relay2, LOW);
+    delay(500);
   }
+  
 }
