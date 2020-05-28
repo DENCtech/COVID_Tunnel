@@ -51,11 +51,9 @@ void loop() {
   lcd.setCursor(0, 3);
   lcd.print("Duration: ");
   ambuttonState = digitalRead(amButton);
-//  if(ambuttonState == HIGH){
+  if(ambuttonState == HIGH){
     val = digitalRead(inputPin);  // read input value
     val2 = digitalRead(inputPin2);  // read input value
-    Serial.println(val);
-    Serial.println(val2);
     if (val == HIGH && val2 == LOW) {
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
@@ -77,23 +75,23 @@ void loop() {
         delay(100);
       }
     }
-//  }
-//  else{
-//    ssbuttonState = digitalRead(ssButton);
-//    if(ssbuttonState == HIGH){
-//      digitalWrite(buzzer, HIGH);
-//      digitalWrite(relay, HIGH);
-//      digitalWrite(relay2, HIGH);
-//      Serial.println("Relay on");
-//      delay(interval);
-//    }
-//    else{
-//      Serial.println("Relay off");
-//      digitalWrite(buzzer, LOW);
-//      digitalWrite(relay, LOW);
-//      digitalWrite(relay2, LOW);
-//      delay(500);
-//    }
-//  }
+  }
+  else{
+    ssbuttonState = digitalRead(ssButton);
+    if(ssbuttonState == HIGH){
+      digitalWrite(buzzer, HIGH);
+      digitalWrite(relay, HIGH);
+      digitalWrite(relay2, HIGH);
+      Serial.println("Relay on");
+      delay(interval);
+    }
+    else{
+      Serial.println("Relay off");
+      digitalWrite(buzzer, LOW);
+      digitalWrite(relay, LOW);
+      digitalWrite(relay2, LOW);
+      delay(500);
+    }
+  }
   
 }
