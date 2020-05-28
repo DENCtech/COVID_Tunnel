@@ -9,7 +9,7 @@ const int relay = 7;
 int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
 int val2 = 0;                    // variable for reading the pin status
-const unsigned long interval = 7000;           // interval at which to blink (milliseconds)
+const unsigned long interval = 5000;           // interval at which to blink (milliseconds)
 
 // Buttons and state
 int amButton = 11;
