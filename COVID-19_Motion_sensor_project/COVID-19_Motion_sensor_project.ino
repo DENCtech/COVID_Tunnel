@@ -81,7 +81,8 @@ void loop() {
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
-    lcd.print(val5+"sec");
+    lcd.print(val5);
+    lcd.print("sec");
     if (val == HIGH) {
       digitalWrite(buzzer, HIGH);
       delay(50);
@@ -90,18 +91,7 @@ void loop() {
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
       delay(val5);
-      lcd.setCursor(0, 0);
-      lcd.print("ROBOTICS--CENTER");
-      lcd.setCursor(0, 1);
-      lcd.print("Mode: ");
-      lcd.setCursor(-4, 2);
-      lcd.print("ChemLevel: ");
-      lcd.setCursor(-4, 3);
-      lcd.print("Duration: ");
-      lcd.setCursor(7, 1);
-      lcd.print("      ");
-      lcd.setCursor(7, 1);
-      lcd.print("AUTO");
+      
       digitalWrite(relay, LOW);
       digitalWrite(relay2, LOW);
       delay(10);
@@ -152,7 +142,8 @@ void chemLevel(){
     lcd.setCursor(7, 2);
     lcd.print("      ");
     lcd.setCursor(7, 2);
-    lcd.print(percentage+"%");
+    lcd.print(percentage);
+    lcd.print("%");
   }
   else{
     Serial.println("Container Max-Height Exceeded");
