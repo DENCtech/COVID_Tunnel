@@ -149,9 +149,17 @@ void chemLevel(){
   pot_map = map(pot,0,1023,0,240);
   if(distance3>0 && distance3<240 && pot_map>=distance3){
     percentage = map(distance3,0,pot_map,100,0);
+    lcd.setCursor(7, 2);
+    lcd.print("      ");
+    lcd.setCursor(7, 2);
+    lcd.print(percentage+"%");
   }
   else{
     Serial.println("Container Max-Height Exceeded");
     percentage = 0;
+    lcd.setCursor(7, 2);
+    lcd.print("      ");
+    lcd.setCursor(7, 2);
+    lcd.print(percentage);
   }
 }
