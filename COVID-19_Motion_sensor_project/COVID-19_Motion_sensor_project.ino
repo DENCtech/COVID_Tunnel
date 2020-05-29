@@ -9,7 +9,7 @@ const int relay = 7;
 int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
 int val2 = 0;                    // variable for reading the pin status
-const unsigned long minInterval = 5000;           // interval at which to blink (milliseconds)
+const unsigned long minInterval = 4000;           // interval at which to blink (milliseconds)
 const unsigned long maxInterval = 30000;           // interval at which to blink (milliseconds)
 
 // Buttons and state
@@ -27,8 +27,8 @@ int var1 = A0;
 int var2 = A1;
 
 //ultrasonic sensor one
-const int trigPin3 = 13;    // Trigger
-const int echoPin3 = 12;    // Echo
+const int trigPin3 = 4;    // Trigger
+const int echoPin3 = 3;    // Echo
 int distance3;
 float duration3;
 int state3;
@@ -100,7 +100,7 @@ void loop() {
     ssbuttonState = digitalRead(ssButton);
     int val4 = digitalRead(var2);
     int val5 = map(val4,0,1023,minInterval,maxInterval);
-    int val6 = map(val5,minInterval,maxInterval,5,30);
+    int val6 = map(val5,minInterval,maxInterval,4,30);
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
