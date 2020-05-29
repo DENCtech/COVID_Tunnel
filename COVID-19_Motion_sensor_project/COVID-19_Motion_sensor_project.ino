@@ -9,7 +9,8 @@ const int relay = 7;
 int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
 int val2 = 0;                    // variable for reading the pin status
-const unsigned long interval = 5000;           // interval at which to blink (milliseconds)
+const unsigned long minInterval = 5000;           // interval at which to blink (milliseconds)
+const unsigned long maxInterval = 30000;           // interval at which to blink (milliseconds)
 
 // Buttons and state
 int amButton = 8;
@@ -97,15 +98,20 @@ void loop() {
     lcd.setCursor(7, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
+    int var4 = digitalRead(var2);
+    int var5 = map(var4,0,1023,minInterval,maxInterval);
+    int var6 = map(var5,minInterval,maxInterval,5,30);
+    lcd.setCursor(7, 3);
+    lcd.print("      ");
+    lcd.setCursor(7, 3);
+    lcd.print(var6+"secs");
     if(ssbuttonState == HIGH){
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
-      Serial.println("Relay on");
-      delay(interval);
+      delay(var6);
     }
     else{
-      Serial.println("Relay off");
       digitalWrite(buzzer, LOW);
       digitalWrite(relay, LOW);
       digitalWrite(relay2, LOW);
@@ -127,13 +133,13 @@ void getDistance3(){
 }
 void chemLevel(){
   getDistance3();
-  int val1 = analogRead(var2);
-  int var3 = map(val1,0,1023,0,100);
-  if(distance3 == var3){
+  int val1 = analogRead(var1);
+  int val3 = map(val1,0,1023,0,100);
+  if(distance3 >= val3){
     lcd.setCursor(7, 2);
     lcd.print("    ");
     lcd.setCursor(7, 2);
-    lcd.print(var3+"%");
+    lcd.print(val3+"%");
     Serial.println("0%");
   }
 //  if(distance3 > 0 && distance3 < 20){
