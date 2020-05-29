@@ -52,6 +52,7 @@ void setup() {
 }
 
 void loop() {
+  chemLevel();
   lcd.init();
   lcd.setCursor(0, 0);
   lcd.print("ROBOTICS--CENTER");
@@ -123,4 +124,36 @@ void getDistance3(){
 //  Serial.print("Distance3: ");
 //  Serial.println(distance3);
 
+}
+void chemLevel(){
+  getDistance3();
+  int val1 = analogRead(var2);
+  int var3 = map(val1,0,1023,0,100);
+  if(distance3 == var3){
+    lcd.setCursor(7, 2);
+    lcd.print("    ");
+    lcd.setCursor(7, 2);
+    lcd.print(var3+"%");
+    Serial.println("0%");
+  }
+//  if(distance3 > 0 && distance3 < 20){
+//    state3 = HIGH;
+//    Serial.println("100%");
+//  }
+//  if(distance3 > 19 && distance3 < 40){
+//    state3 = HIGH;
+//    Serial.println("100%");
+//  }
+//  if(distance3 > 39 && distance3 < 60){
+//    state3 = HIGH;
+//    Serial.println("60%");
+//  }
+//  if(distance3 > 59 && distance3 < 80){
+//    state3 = HIGH;
+//    Serial.println("20%");
+//  }
+//  if(distance3 > 79 && distance3 < 100){
+//    state3 = LOW;
+//    Serial.println("0%");
+//  }
 }
