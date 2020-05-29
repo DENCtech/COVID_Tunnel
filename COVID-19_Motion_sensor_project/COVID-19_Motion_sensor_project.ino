@@ -10,7 +10,7 @@ int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
 int val2 = 0;                    // variable for reading the pin status
 const unsigned long minInterval = 4000;           // interval at which to blink (milliseconds)
-const unsigned long maxInterval = 30000;           // interval at which to blink (milliseconds)
+const unsigned long maxInterval = 10000;           // interval at which to blink (milliseconds)
 
 // Buttons and state
 int amButton = 8;
@@ -32,6 +32,9 @@ const int echoPin3 = 3;    // Echo
 int distance3;
 float duration3;
 int state3;
+int percentage;
+int pot,pot_map;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -40,21 +43,18 @@ void setup() {
   pinMode(inputPin, INPUT);     // declare sensor as input
   pinMode(inputPin2, INPUT); 
   pinMode(amButton, INPUT);
+  pinMode(trigPin3, OUTPUT);
+  pinMode(echoPin3, INPUT);
   pinMode(ssButton, INPUT); 
   pinMode(buzzer, OUTPUT);
   digitalWrite(relay, LOW);
   digitalWrite(relay2, LOW);
   digitalWrite(buzzer, LOW);
-  delay(100);
+  
   Serial.begin(9600);
   // LCD
   lcd.init();
   lcd.backlight();
-}
-
-void loop() {
-  chemLevel();
-  lcd.init();
   lcd.setCursor(0, 0);
   lcd.print("ROBOTICS--CENTER");
   lcd.setCursor(0, 1);
@@ -63,6 +63,11 @@ void loop() {
   lcd.print("ChemLevel: ");
   lcd.setCursor(-4, 3);
   lcd.print("Duration: ");
+  delay(1000);
+}
+
+void loop() {
+  chemLevel();
   ambuttonState = digitalRead(amButton);
   if(ambuttonState == HIGH){
     lcd.setCursor(7, 1);
@@ -71,6 +76,12 @@ void loop() {
     lcd.print("AUTO");
     val = digitalRead(inputPin);  // read input value
     val2 = digitalRead(inputPin2);  // read input value
+    int val4 = analogRead(var2);
+    int val5 = map(val4,0,1023,minInterval,maxInterval);
+    lcd.setCursor(7, 3);
+    lcd.print("      ");
+    lcd.setCursor(7, 3);
+    lcd.print(val5+"sec");
     if (val == HIGH) {
       digitalWrite(buzzer, HIGH);
       delay(50);
@@ -78,7 +89,19 @@ void loop() {
       delay(50);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
-      delay(5000);
+      delay(val5);
+      lcd.setCursor(0, 0);
+      lcd.print("ROBOTICS--CENTER");
+      lcd.setCursor(0, 1);
+      lcd.print("Mode: ");
+      lcd.setCursor(-4, 2);
+      lcd.print("ChemLevel: ");
+      lcd.setCursor(-4, 3);
+      lcd.print("Duration: ");
+      lcd.setCursor(7, 1);
+      lcd.print("      ");
+      lcd.setCursor(7, 1);
+      lcd.print("AUTO");
       digitalWrite(relay, LOW);
       digitalWrite(relay2, LOW);
       delay(10);
@@ -98,18 +121,10 @@ void loop() {
     lcd.setCursor(7, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
-    int val4 = digitalRead(var2);
-    int val5 = map(val4,0,1023,minInterval,maxInterval);
-    int val6 = map(val5,minInterval,maxInterval,4,30);
-    lcd.setCursor(7, 3);
-    lcd.print("      ");
-    lcd.setCursor(7, 3);
-    lcd.print(val6+"sec");
     if(ssbuttonState == HIGH){
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
-      delay(val6);
     }
     else{
       digitalWrite(buzzer, LOW);
@@ -127,41 +142,16 @@ void getDistance3(){
   duration3 = pulseIn(echoPin3, HIGH);
   distance3 = duration3 * 0.034 / 2;
 
-//  Serial.print("Distance3: ");
-//  Serial.println(distance3);
-
 }
 void chemLevel(){
   getDistance3();
-  int depth = map(distance3,0,150,0,100);
-  int val = analogRead(var1);
-  int val2 = map(val,0,1023,0,100);
-  
-  if(depth >= val2){
-    lcd.setCursor(7, 2);
-    lcd.print("    ");
-    lcd.setCursor(7, 2);
-    lcd.print(val2+"%");
-    Serial.println("0%");
+  pot = analogRead(A0);
+  pot_map = map(pot,0,1023,0,240);
+  if(distance3>0 && distance3<240 && pot_map>=distance3){
+    percentage = map(distance3,0,pot_map,100,0);
   }
-//  if(distance3 > 0 && distance3 < 20){
-//    state3 = HIGH;
-//    Serial.println("100%");
-//  }
-//  if(distance3 > 19 && distance3 < 40){
-//    state3 = HIGH;
-//    Serial.println("100%");
-//  }
-//  if(distance3 > 39 && distance3 < 60){
-//    state3 = HIGH;
-//    Serial.println("60%");
-//  }
-//  if(distance3 > 59 && distance3 < 80){
-//    state3 = HIGH;
-//    Serial.println("20%");
-//  }
-//  if(distance3 > 79 && distance3 < 100){
-//    state3 = LOW;
-//    Serial.println("0%");
-//  }
+  else{
+    Serial.println("Container Max-Height Exceeded");
+    percentage = 0;
+  }
 }
