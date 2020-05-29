@@ -98,18 +98,18 @@ void loop() {
     lcd.setCursor(7, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
-    int var4 = digitalRead(var2);
-    int var5 = map(var4,0,1023,minInterval,maxInterval);
-    int var6 = map(var5,minInterval,maxInterval,5,30);
+    int val4 = digitalRead(var2);
+    int val5 = map(val4,0,1023,minInterval,maxInterval);
+    int val6 = map(val5,minInterval,maxInterval,5,30);
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
-    lcd.print(var6+"secs");
+    lcd.print(val6+"sec");
     if(ssbuttonState == HIGH){
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
-      delay(var6);
+      delay(val6);
     }
     else{
       digitalWrite(buzzer, LOW);
