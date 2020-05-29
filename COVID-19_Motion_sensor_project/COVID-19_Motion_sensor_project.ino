@@ -133,13 +133,15 @@ void getDistance3(){
 }
 void chemLevel(){
   getDistance3();
-  int val1 = analogRead(var1);
-  int val3 = map(val1,0,1023,0,100);
-  if(distance3 >= val3){
+  int depth = map(distance3,0,150,0,100);
+  int val = analogRead(var1);
+  int val2 = map(val,0,1023,0,100);
+  
+  if(depth >= val2){
     lcd.setCursor(7, 2);
     lcd.print("    ");
     lcd.setCursor(7, 2);
-    lcd.print(val3+"%");
+    lcd.print(val2+"%");
     Serial.println("0%");
   }
 //  if(distance3 > 0 && distance3 < 20){
