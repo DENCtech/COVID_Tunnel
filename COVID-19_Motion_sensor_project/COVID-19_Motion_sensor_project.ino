@@ -115,7 +115,7 @@ void loop() {
       digitalWrite(buzzer, LOW);
       digitalWrite(relay, LOW);
       digitalWrite(relay2, LOW);
-      delay(500);
+      delay(800);
     }
   }
 }
