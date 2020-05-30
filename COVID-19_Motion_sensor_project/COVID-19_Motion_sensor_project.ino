@@ -83,7 +83,7 @@ void loop() {
     lcd.setCursor(7, 3);
     lcd.print(val5);
     lcd.print("sec");
-    if (val == HIGH) {
+    if (val == HIGH && percentage > 0) {
       digitalWrite(buzzer, HIGH);
       delay(50);
       digitalWrite(buzzer, LOW);
@@ -111,7 +111,7 @@ void loop() {
     lcd.setCursor(7, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
-    if(ssbuttonState == HIGH){
+    if(ssbuttonState == HIGH && percentage > 0){
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
@@ -124,7 +124,7 @@ void loop() {
     }
   }
 }
-void getDistance3(){
+void chemLevel(){
   digitalWrite(trigPin3, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin3, LOW);
@@ -132,9 +132,6 @@ void getDistance3(){
   duration3 = pulseIn(echoPin3, HIGH);
   distance3 = duration3 * 0.034 / 2;
 
-}
-void chemLevel(){
-  getDistance3();
   pot = analogRead(A0);
   pot_map = map(pot,0,1023,0,240);
   if(distance3>0 && distance3<240 && pot_map>=distance3){
