@@ -46,9 +46,9 @@ void setup() {
   pinMode(inputPin, INPUT);     // declare sensor as input
   pinMode(inputPin2, INPUT); 
   pinMode(amButton, INPUT);
+  pinMode(ssButton, INPUT);
   pinMode(trigPin3, OUTPUT);
-  pinMode(echoPin3, INPUT);
-  pinMode(ssButton, INPUT); 
+  pinMode(echoPin3, INPUT); 
   pinMode(buzzer, OUTPUT);
   digitalWrite(relay, LOW);
   digitalWrite(relay2, LOW);
@@ -89,8 +89,8 @@ void loop() {
     lcd.print("      ");
     lcd.setCursor(6, 3);
     lcd.print(val6, 1);
-    lcd.setCursor(8, 3);
-    lcd.print("s");
+    lcd.setCursor(9, 3);
+    lcd.print("sec");
     if (val == HIGH && percentage < 11) {
       digitalWrite(buzzer, HIGH);
       delay(50);
@@ -114,9 +114,9 @@ void loop() {
     }
   }
   else{
-    lcd.setCursor(7, 1);
+    lcd.setCursor(6, 1);
     lcd.print("      ");
-    lcd.setCursor(7, 1);
+    lcd.setCursor(6, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
     if(ssbuttonState == HIGH && percentage < 11){
@@ -144,18 +144,18 @@ void chemLevel(){
   pot_map = map(pot,0,1023,0,240);
   if(distance3>0 && distance3<240 && pot_map>=distance3){
     percentage = map(distance3,0,pot_map,100,0);
-    lcd.setCursor(6, 2);
+    lcd.setCursor(7, 2);
     lcd.print("      ");
-    lcd.setCursor(6, 2);
+    lcd.setCursor(7, 2);
     lcd.print(percentage);
     lcd.print("%");
   }
   else{
     Serial.println("Container Max-Height Exceeded");
     percentage = 0;
-    lcd.setCursor(6, 2);
+    lcd.setCursor(7, 2);
     lcd.print("      ");
-    lcd.setCursor(6, 2);
+    lcd.setCursor(7, 2);
     lcd.print(percentage);
   }
 }
