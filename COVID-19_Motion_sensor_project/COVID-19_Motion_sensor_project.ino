@@ -73,9 +73,9 @@ void loop() {
   chemLevel();
   ambuttonState = digitalRead(amButton);
   if(ambuttonState == HIGH){
-    lcd.setCursor(7, 1);
+    lcd.setCursor(6, 1);
     lcd.print("      ");
-    lcd.setCursor(7, 1);
+    lcd.setCursor(6, 1);
     lcd.print("AUTO");
     val = digitalRead(inputPin);  // read input value
     val2 = digitalRead(inputPin2);  // read input value
@@ -85,11 +85,12 @@ void loop() {
 //    dtostrf(val6,4,2,float_str);
 //    Serial.println(val6);
 //    sprintf(line0, "Temp: %-7sC", float_str);
-    lcd.setCursor(7, 3);
+    lcd.setCursor(6, 3);
     lcd.print("      ");
-    lcd.setCursor(7, 3);
+    lcd.setCursor(6, 3);
     lcd.print(val6, 1);
-    lcd.print("sec");
+    lcd.setCursor(8, 3);
+    lcd.print("s");
     if (val == HIGH && percentage < 11) {
       digitalWrite(buzzer, HIGH);
       delay(50);
@@ -143,18 +144,18 @@ void chemLevel(){
   pot_map = map(pot,0,1023,0,240);
   if(distance3>0 && distance3<240 && pot_map>=distance3){
     percentage = map(distance3,0,pot_map,100,0);
-    lcd.setCursor(7, 2);
+    lcd.setCursor(6, 2);
     lcd.print("      ");
-    lcd.setCursor(7, 2);
+    lcd.setCursor(6, 2);
     lcd.print(percentage);
     lcd.print("%");
   }
   else{
     Serial.println("Container Max-Height Exceeded");
     percentage = 0;
-    lcd.setCursor(7, 2);
+    lcd.setCursor(6, 2);
     lcd.print("      ");
-    lcd.setCursor(7, 2);
+    lcd.setCursor(6, 2);
     lcd.print(percentage);
   }
 }
