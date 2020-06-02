@@ -37,7 +37,7 @@ int pot,pot_map;
 int val4,val5;
 float val6;
 char float_str[8];
-
+char line0[21];
 
 void setup() {
   // put your setup code here, to run once:
@@ -82,9 +82,9 @@ void loop() {
     val4 = analogRead(var2);
     val5 = map(val4,0,1023,minInterval,maxInterval);
     val6 = val5/1000;
-    Serial.println(val6);
     dtostrf(val6,4,2,float_str);
-    
+    Serial.println(val6);
+    sprintf(line0, "Temp: %-7sC", float_str);
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
