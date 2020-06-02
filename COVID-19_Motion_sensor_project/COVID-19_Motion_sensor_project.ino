@@ -88,7 +88,7 @@ void loop() {
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
-    lcd.print(val6, 2);
+    lcd.print(val6, 1);
     lcd.print("sec");
     if (val == HIGH && percentage < 11) {
       digitalWrite(buzzer, HIGH);
