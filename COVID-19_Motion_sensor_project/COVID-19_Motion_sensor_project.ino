@@ -34,6 +34,9 @@ float duration3;
 int state3;
 int percentage;
 int pot,pot_map;
+int val4,val5;
+float val6;
+char float_str[8];
 
 
 void setup() {
@@ -76,21 +79,25 @@ void loop() {
     lcd.print("AUTO");
     val = digitalRead(inputPin);  // read input value
     val2 = digitalRead(inputPin2);  // read input value
-    int val4 = analogRead(var2);
-    int val5 = map(val4,0,1023,minInterval,maxInterval);
+    val4 = analogRead(var2);
+    val5 = map(val4,0,1023,minInterval,maxInterval);
+    val6 = val5/1000;
+    Serial.println(val6);
+    dtostrf(val6,4,2,float_str);
+    
     lcd.setCursor(7, 3);
     lcd.print("      ");
     lcd.setCursor(7, 3);
-    lcd.print(val5);
+    lcd.print(val6);
     lcd.print("sec");
-    if (val == HIGH && percentage > 0) {
+    if (val == HIGH && percentage < 11) {
       digitalWrite(buzzer, HIGH);
       delay(50);
       digitalWrite(buzzer, LOW);
       delay(50);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
-      delay(val5);
+      delay(val6);
       
       digitalWrite(relay, LOW);
       digitalWrite(relay2, LOW);
@@ -111,7 +118,7 @@ void loop() {
     lcd.setCursor(7, 1);
     lcd.print("MANUAL");
     ssbuttonState = digitalRead(ssButton);
-    if(ssbuttonState == HIGH && percentage > 0){
+    if(ssbuttonState == HIGH && percentage < 11){
       digitalWrite(buzzer, HIGH);
       digitalWrite(relay, HIGH);
       digitalWrite(relay2, HIGH);
